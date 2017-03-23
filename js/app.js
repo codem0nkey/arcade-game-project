@@ -1,3 +1,14 @@
+var speed_start = function () {
+	var spd = Math.random() * 200 + 50;
+	return spd;
+};
+
+var row_move = 6;
+var col_move = 2;
+
+col = [1, 100, 200, 300, 400];
+row = [-10, 70, 155, 235, 320, 400, 435];
+
 // Enemies our player must avoid
 var Enemy = function(x,y,speed) {
     // Variables applied to each of our instances go here,
@@ -8,7 +19,6 @@ var Enemy = function(x,y,speed) {
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-	
     this.sprite = 'images/enemy-bug.png';
 };
 
@@ -18,7 +28,14 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-	this.x += this.speed * dt;
+	
+	if (this.x > 550) {
+		this.x = -30;
+		this.speed = speed_start();
+		this.x += this.speed * dt;
+	} else {
+		this.x += this.speed * dt;
+	}
 };
 
 // Draw the enemy on the screen, required method for game
@@ -29,33 +46,48 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 
 var Player = function() {
-	start_x = 100;
-	start_y = 400;
-	this.x = start_x;
-	this.y = start_y;
+	this.x = col[col_move];
+	this.y = row[row_move];
 	this.sprite = 'images/char-boy.png';
 };
 
 // This class requires an update(), render() and
 // a handleInput() method.
 
-Player.prototype.update = function() {};
+Player.prototype.update = function() {
+};
 
 Player.prototype.render = function() {
 	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.handleInput = function() {};
+Player.prototype.handleInput = function(keyPress) {
+	if (keyPress === "up") {
+		--row_move;
+		this.y = row[row_move];
+	} else if (keyPress === "down") {
+		++row_move;
+		this.y = row[row_move];
+	} else if (keyPress === "left") {
+		--col_move;
+		this.x = col[col_move];
+	} else if (keyPress === "right") {
+		++col_move;
+		this.x = col[col_move];
+	} else {}
+};
 
 
 // Now instantiate your objects.
 
+enemy_row = [60,145,230];
 
-var enemy_1 = new Enemy(1, 60, 50);
-var enemy_2 = new Enemy(1, 145, 100);
-var enemy_3 = new Enemy(1, 230, 200);
+var enemy_1 = new Enemy(1, enemy_row[0], speed_start());
+var enemy_2 = new Enemy(1, enemy_row[1], speed_start());
+var enemy_3 = new Enemy(1, enemy_row[2], speed_start());
+var enemy_4 = new Enemy(1, enemy_row[Math.floor(Math.random() * 2)], speed_start());
 // Place all enemy objects in an array called allEnemies
-var allEnemies = [enemy_1,enemy_2, enemy_3];
+var allEnemies = [enemy_1,enemy_2, enemy_3,enemy_4];
 // Place the player object in a variable called player
 
 var player = new Player();
