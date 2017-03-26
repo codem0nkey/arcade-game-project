@@ -3,8 +3,10 @@ var speed_start = function () {
 	return spd;
 };
 
+
 var row_move = 6;
 var col_move = 2;
+
 
 col = [1, 100, 200, 300, 400];
 row = [-10, 70, 155, 235, 320, 400, 435];
@@ -36,7 +38,37 @@ Enemy.prototype.update = function(dt) {
 	} else {
 		this.x += this.speed * dt;
 	}
+	collide(this);
 };
+
+var collide = function(bug) {
+	if (player.y === 235 && bug.y === 230) {
+		check_x();
+	} else if (player.y === 155 && bug.y === 145) {
+		check_x();
+	} else if (player.y === 70 && bug.y === 60) {
+		check_x();
+	} else {
+		win();
+	}
+	
+	function check_x() {
+		if (player.x - bug.x < 75 && player.x - bug.x >= -75) {
+		console.log('You Lost');
+		row_move = 6;
+		col_move = 2;
+		player.x = col[col_move];
+		player.y = row[row_move];
+		}
+	}
+};
+
+function win() {
+	if (player.y === -10) {
+		console.log('You Won!!!');
+	}
+};
+
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
@@ -54,8 +86,7 @@ var Player = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 
-Player.prototype.update = function() {
-};
+Player.prototype.update = function() {};
 
 Player.prototype.render = function() {
 	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -75,6 +106,7 @@ Player.prototype.handleInput = function(keyPress) {
 		++col_move;
 		this.x = col[col_move];
 	} else {}
+	
 };
 
 
