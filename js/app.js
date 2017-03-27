@@ -42,15 +42,14 @@ Enemy.prototype.update = function(dt) {
 };
 
 var collide = function(bug) {
+	
 	if (player.y === 235 && bug.y === 230) {
 		check_x();
 	} else if (player.y === 155 && bug.y === 145) {
 		check_x();
 	} else if (player.y === 70 && bug.y === 60) {
 		check_x();
-	} else {
-		win();
-	}
+	} else {}
 	
 	function check_x() {
 		if (player.x - bug.x < 75 && player.x - bug.x >= -75) {
@@ -60,12 +59,6 @@ var collide = function(bug) {
 		player.x = col[col_move];
 		player.y = row[row_move];
 		}
-	}
-};
-
-function win() {
-	if (player.y === -10) {
-		console.log('You Won!!!');
 	}
 };
 
@@ -86,7 +79,12 @@ var Player = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 
-Player.prototype.update = function() {};
+Player.prototype.update = function() {
+	if (this.y === -10) {
+		console.log('You Won!!!');
+		ctx.canvas.hidden="true";
+	}
+};
 
 Player.prototype.render = function() {
 	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -106,7 +104,6 @@ Player.prototype.handleInput = function(keyPress) {
 		++col_move;
 		this.x = col[col_move];
 	} else {}
-	
 };
 
 
