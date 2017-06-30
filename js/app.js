@@ -34,11 +34,11 @@ Enemy.prototype.update = function(dt) {
 	} else {
 		this.x += this.speed * dt;
 	}
-	collide(this);
+	Enemy.prototype.collide(this);
 };
 
-var collide = function(bug) {
-	//check if same row for a collision
+Enemy.prototype.collide = function(bug){
+		//check if same row for a collision
 	if (player.y === 235 && bug.y === 230) {
 		check_x();
 	} else if (player.y === 155 && bug.y === 145) {
@@ -59,6 +59,7 @@ var collide = function(bug) {
 		}
 	}
 };
+
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
